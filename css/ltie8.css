@@ -1,0 +1,17 @@
+body {
+	height: 100%;
+}
+
+#intro,#kandidati,#priority{
+	min-height: 700px;
+	border-bottom: 7px solid #00654E;
+	padding-top: 30px;
+}
+
+
+#priority-large-carousel .carousel-inner {
+	width: 740px;
+	margin: 0 70px;
+}
+
+

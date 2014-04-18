@@ -1,0 +1,51 @@
+body {
+	width: 950px !important;
+}
+
+#intro{
+	position: relative !important;
+	border-bottom: 7px solid #00644D;
+	nackground: white;
+}
+
+.slide{
+	padding: 30px 0 0 0;
+
+}
+
+#kandidati,#priority,#patka {
+	position: relative !important;
+	border-bottom: 7px solid #00644D;
+	height: auto !important;
+
+}
+
+#intro {min-height: 450px !important;}
+#kandidati {min-height: 700px !important;}
+#priority {min-height: 1000px !important;}
+#patka {min-height: 180px !important; padding: 40px 0;}
+
+.stuzka {
+	display: none;
+}
+
+.b-3 {
+	margin-top: -70px;
+}
+
+.b-2 {
+	margin-top: 30px;
+}
+
+.b-5 {
+	margin-top: -30px;
+}
+
+#priority-large-carousel .carousel-inner {
+	width: 740px;
+	margin: 0 70px;
+}
+
+.arrow-down {
+	display: none;
+}

@@ -1,0 +1,780 @@
+﻿<!DOCTYPE html>
+<html lang="cz">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Svobodní do Europarlamentu 2014">
+<meta name="author" content="Visio Creative">
+<link rel="shortcut icon" href="img/global/favicon.png">
+<title>Svobodní - Eurovolby 2014</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="css/navbar-fixed-top.css" rel="stylesheet">
+<link href="css/carousel.css" rel="stylesheet">
+<link href="css/dashboard.css" rel="stylesheet">
+<link href="css/bootstrap-theme.css" rel="stylesheet">
+<link href="css/bootstrap-own.css" rel="stylesheet">
+<!-- Just for debugging purposes. Don't actually copy this line! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/shi_jquery.min.js"></script>
+<!-- Nice One Page Scrolling Effect -->
+<link rel="stylesheet" media="only screen and (min-width: 980px)" href="css/layout.css" />
+<link rel="stylesheet" media="only screen and (max-width: 979px)" href="css/mobile.css" />
+<link rel="stylesheet" media="only screen and (max-width: 1460px)" href="css/stuzka.css" />
+<link href="css/shi_default.min.css" rel="stylesheet">
+<link rel="stylesheet" media="screen and (max-device-width: 979px)" href="mobile.css" />
+<!--[if lt IE 9 ]>     
+<link href="css/ltie8.css" rel="stylesheet">
+<![endif]-->	
+<!--[if !IE 8]><!-->
+<script>
+function detectmob() {
+	if (window.innerWidth <= 980 && window.innerHeight <= 500) {
+		return true;
+	} else {
+		return false;
+	}
+}
+function NopseOnScroll() {
+	var window_pos = window.pageYOffset;
+	$('.slide').each(function(){
+		slideMe($(this), window_pos);
+	});
+}
+function NopseAnchorAction() {
+	$('.slide').each(function (index) {
+		if ($(this).css('position') == "fixed") {
+			var el = $(this);
+			el.css({"position":"absolute", "top":el.index() * 100 + "vh"});
+		}
+	});
+}
+if(!detectmob()){
+	 function slideMe(el, window_pos) {
+	  //Set the fixed position on slides when we scroll past them.
+	  if (el.index() > 0){
+	   el.css({"position":"absolute", "top":el.index() * 100 + "vh"});
+	   if(window_pos > el.offset().top) {
+		  el.css({"position":"fixed", "top":"0"});
+	   }
+	  }
+	 }
+	$(function() {
+		$('.slide').each(function(){
+			if ($(this).index() > 0){
+				$(this).css({"position":"absolute", "top":$(this).index() * 100 + "vh"});
+			}
+		});
+
+		$('.vcenter').each(function(){
+			$(this).css({"margin-top":(($(this).parent().height() - $(this).height())/2)});
+		});
+
+		$(window).scroll(function() {
+			NopseOnScroll();
+		});
+	});
+}
+</script>
+<!--<![endif]-->	
+<!-- Bootstrap JS -->
+	<script type="text/javascript">
+	function getKandidatiLargeNumberByHref(href) {
+		var indexCurrent = -1;
+		$("#kandidati-large .item").each(function (index) {
+			if ($(this).attr('id').substring(1) == href) indexCurrent = index;
+		});
+		return indexCurrent;
+	}
+	
+	function getKandidatiSmallNumberByHref(href) {
+		var indexCurrent = -1;
+		$("#kandidati-small .item").each(function (index) {
+			$(this).find("a").each(function (_index) {
+				if ($(this).attr('href').substring(1) == href.substring(1)) indexCurrent = index;
+			});			
+		});
+		return indexCurrent;
+	}
+	
+	function getPrioLargeNumberByHref(href) {
+		var indexCurrent = -1;
+		$("#priority-large .item").each(function (index) {
+			if ($(this).attr('id').substring(1) == href) indexCurrent = index;
+		});
+		return indexCurrent;
+	}
+	
+	/* http://stackoverflow.com/a/57819 */
+	function removeClassByPrefix(el, prefix) {
+		var regx = new RegExp('\\b' + prefix + '.*?\\b', 'g');
+		el.className = el.className.replace(regx, '');
+		return el;
+	}
+	
+	function getAnchorFromLink(href) {
+		var l = href.indexOf("#");
+		if (l!=-1) {
+			return href.substring(l);
+		}
+		return '';
+	}
+	
+	$(document).ready(function () {		
+		$('.carousel').carousel();
+		
+		$('#kandidati-small-carousel.carousel').carousel({interval: 1e6});
+		$('#kandidati-large-carousel.carousel').carousel({interval: 1e6});
+		$('#priority-large-carousel.carousel').carousel({interval: 1e6});
+	
+		$('#kandidati-small-carousel.carousel').carousel('pause');
+		$('#kandidati-large-carousel.carousel').carousel('pause');
+		$('#priority-large-carousel.carousel').carousel('pause');
+		
+		$('#kandidati-large-carousel.carousel').on('slid.bs.carousel', function () {
+			location.href = "#kandidati/"+$('#kandidati-large-carousel.carousel').find(".item.active").attr('id').substring(1);
+		});
+		
+		$('#priority-large-carousel.carousel').on('slid.bs.carousel', function () {
+			location.href = "#priority/"+$('#priority-large-carousel.carousel').find(".item.active").attr('id').substring(1);
+		});
+	
+		$('#kandidati-large-carousel-close').click(function (e) {
+			e.preventDefault();
+			var ac = $('#kandidati-large-carousel .item.active');	
+			if (ac.length>0) {
+				ac = ac.eq(0);
+				$('#kandidati-small-carousel').removeClass('slide').carousel(getKandidatiSmallNumberByHref(ac.attr('id'))).addClass('slide');
+			}			
+			else {
+				$('#kandidati-small-carousel').removeClass('slide').carousel(0).addClass('slide');
+			}
+			$("#kandidati-large").hide();
+			$("#kandidati-small").show();
+			
+			location.href = "#kandidati";
+		});
+	
+		$("#kandidati-small .item a").click(function (e) {
+			e.preventDefault();
+			$('.carousel').removeClass('slide').carousel(getKandidatiLargeNumberByHref($(this).attr('href').substring(1))).addClass('slide');
+			$("#kandidati-small").hide();
+			$("#kandidati-large").show();
+			
+			location.href = "#kandidati/"+$('#kandidati-large-carousel.carousel').find(".item.active").attr('id').substring(1);
+		});
+		
+		$('#priority-large-carousel-close').click(function (e) {
+			e.preventDefault();
+			$("#priority-large-x").remove();
+			$("#priority-large").hide();
+			$("#priority-small").show();
+			removeClassByPrefix($("#priority").get(0), "colorize-");
+			
+			location.href = "#priority";
+		});
+		
+		$("#priority-small a").click(function (e) {
+			e.preventDefault();
+			var self = $(this);
+			var el = $(this).closest('.bubble');
+			var elof = el.position();
+			
+			$("#priority-large-x").remove();
+			$("#priority-large").before(
+				$("<div style=\"width: 100vw; height: 100vh; position: fixed; z-index: 93; top: 0px; left: 0px; opacity: 0; \" id=\"priority-large-x\" />")
+			);
+			
+			$('#priority-large-carousel').removeClass('slide').carousel(getPrioLargeNumberByHref(self.attr('href').substring(1))).addClass('slide');
+			location.href = "#priority/"+$('#priority-large-carousel.carousel').find(".item.active").attr('id').substring(1);
+			
+			$("#priority-large-x").animate({
+				opacity: 1
+			}, 100, "swing", function () {
+				$('#priority-large-carousel.carousel').carousel('pause');
+				$("#priority").addClass("colorize-"+self.data('color-class'));
+				$("#priority").addClass("colorize-me");
+				$("#priority-large").css({opacity: 0}).show().animate({opacity: 1}, 700);
+
+				
+					$("#priority-small").hide();
+					el.removeAttr('style');
+					
+					$("#priority-large-x").remove();				
+			});
+			
+			
+		});
+		
+		if (location.hash) {
+			var ok0 = false, ok1 = false;
+			
+			var p = location.hash.substring(1).split('/'), p0 = p[0], p1 = p[1];
+			
+			if (!ok0) $("div").each(function () {
+				if ($(this).is(":visible")) {					
+					if ($(this).attr('id') == p0) {
+						ok0 = true;
+						NopseAnchorAction();
+					}
+				}
+			});
+			
+			
+			if (ok0 && !ok1 && p1) $("#kandidati-small a").each(function () {
+				if ($(this).attr('href').substring(1) == p1) {
+					ok1 = true;
+					location.href = "#kandidati";
+					NopseAnchorAction();
+					$(this).click();
+					location.href = "#kandidati/"+$(this).attr('href').substring(1);
+				}
+			});
+			
+			if (ok0 && !ok1 && p1) $("#priority-small a").each(function () {
+				if ($(this).attr('href').substring(1) == p1) {
+					ok1 = true;
+					location.href = "#priority";
+					NopseAnchorAction();
+					$(this).click();
+					location.href = "#priority/"+$(this).attr('href').substring(1);
+				}
+			});
+			if (!ok0 || p1 && !ok1) location.href = "#";
+		}
+	});
+	</script>
+
+<!-- FONTY V CHROME -->
+	<script>
+	$(function() { $('body').hide().show(); });
+	
+	
+	$('body')
+	  .delay(500)
+	  .queue( 
+	  	function(next){ 
+	    	$(this).css('padding-right', '1px'); 
+	  	}
+	  );
+	 
+	jQuery(window).load(function(){jQuery('body').width(jQuery('body').width()+1).width('auto')})
+	</script>
+</head>
+<body id="top">
+	<div id="intro" class="slide">
+		<div class="container">
+		<div class="content vcenter">
+	<!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
+      <!-- Indicators -->
+	  <!--
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+	  -->
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="img/poutace/poutac-1.PNG" alt="Posvítíme si na euronesmysly">
+        </div>
+		<div class="item">
+          <img src="img/poutace/poutac-2-euro.jpg" alt="Euro? Rozhodně ne!">
+        </div>
+        <div class="item">
+          <img src="img/poutace/poutac-2-euronesmysly.jpg" alt="Proti euronesmyslům">
+        </div>
+        <div class="item">
+          <img src="img/poutace/poutac-2-evropa.jpg" alt="Evropa potřebuje změnu">
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div><!-- /.carousel -->
+	</div>
+	</div><!-- /.container -->	
+	<div class="arrow-down"><a href="#kandidati" title="Přejít na přehled kandidátů"><span class="glyphicon glyphicon-chevron-down"></span></a></div>
+	</div>
+	<div id="kandidati" class="slide">
+		<div class="container">
+			<div class="content vcenter">
+<div id="kandidati-large">
+	<div id="kandidati-large-carousel-close"><span class="glyphicon glyphicon-remove"></span></div>
+	<div>
+		<div id="kandidati-large-carousel" class="carousel slide">		
+			<div class="carousel-inner">			
+				<div class="item active" id="_kandidat-1" >
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/mach.jpg" alt="Petr Mach"></span>
+					<div class="popis"><h2>1. Ing. Petr Mach, Ph.D.</h2><em>ekonom, učitel</em>
+					<p>Petr Mach je od založení strany předsedou Svobodných. Je mu 38 let, přednáší ekonomii na vysokých školách. Tématem Evropské unie se zabývá dlouhodobě. Napsal knihu Úskalí evropské integrace (2003) a knihu Jak vystoupit z EU (2009).</p><p>„Chtěl bych se přidat do frakce k Nigelu Farageovi, tvořit skutečnou opozici mašinérii EU a hlasovat proti všem návrhům, které omezují svobodu českých obyvatel a svrchovanost České republiky. Chci navrhnout změnu smlouvy o EU, která by dala České republice výjimku ze zavedení eura,“ dodává předseda Svobodných Petr Mach.</p></div>
+				</div>
+				<div class="item" id="_kandidat-2" >
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/payne.jpg" alt="Jiří Payne"></span>
+					<div class="popis"><h2>2. RNDr. Jiří Payne</h2><em>jaderný fyzik</em>
+					<p>Jiří Payne by se v Evropském parlamentu rád věnoval přípravě scénáře na vystoupení z EU:</p><p>„Je nezbytné nové i stávající normy třídit do několika skupin. Některé předpisy je možné okamžitě po vystoupení zrušit. Některé by se měly redukovat a změnit na mezivládní dohody. Některé bude nutné rekodifikovat a bude záležet na tom, jak rychle by se to dalo stíhat. Bude nutné stanovit priority. V návaznosti na chystané referendum o vystoupení Velké Británie z EU je třeba navazovat kontakty a jednat s partnery ze všech zemí o tom, jak by vystoupení mohlo proběhnout. Určitě bude výhodné sledovat přípravy Britů a spolupracovat s nimi. Proces vystoupení bude obdobný, jako bylo rozdělení Československa, mnohé zkušenosti bude možné využít,“ vysvětlil svou představu o činnosti v Evropském parlamentu místopředseda Svobodných Jiří Payne.</p></div>
+				</div>
+				<div class="item" id="_kandidat-3" >
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/pajonk.jpg" alt="Tomáš Pajonk"></span>
+					<div class="popis"><h2>3. Ing. Tomáš Pajonk</h2><em>jednatel, programátor</em>
+					<p>Tomáš Pajonk vystudoval Operační výzkum na VŠE. Je mu 32 let, je ženatý a má tři děti. Vytvořil program Tasha, který zlepšuje rozvozové trasy (a šetří tím peníze a auta) dopravcům v ČR a Velké Británii. Má rád deskové hry, v létě chodí do rumunských hor a zajímá se o historii, ekonomii a vývoj společnosti. Říká, že opakovat chyby našich předků nemusíme. Je místopředsedou Svobodných.</p><p>„Země v EU chudnou. Chci zastupovat ty, kteří vědí, že zvýhodnit jedny, znamená znevýhodnit druhé. Chci zastupovat ty, kteří na "evropské integraci" prodělávají kalhoty, což jsme skoro všichni. Proti nám stojí majitelé grantových agentur, vysocí úředníci, kariérní evropští politici a byrokraté. Nenechme si vnutit jejich vizi světa,” podotknul místopředseda Svobodných Tomáš Pajonk.</p></div>
+				</div>
+				<div class="item" id="_kandidat-4">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/jedlicka.jpg" alt="Vít Jedlička"></span>
+					<div class="popis"><h2>4. Bc. Vít Jedlička</h2><em>analytik finančních trhů</em>
+					<p>Vít Jedlička (narozen r. 1983 v Hradci Králové), studoval ekonomii a politologii, předseda Strany svobodných občanů v Královéhradeckém kraji. Vystudoval obor mezinárodní obchod na Vysoké škole ekonomické a aktuálně dokončuje studium politologie na Vysoké škole CEVRO. V roce 2010 založil občanské sdružení Reformy.cz, jehož hlavní náplní je překlad zahraničních videí podporujících politickou a ekonomickou svobodu. Letos videa především z Evropského parlamentu publikovaná sdružením překonala 10 miliónů zhlédnutí a patří tak k nejsledovanějším českým reportážním kanálům na internetu. V současné době pracuje jako analytik finančních trhů. Jeho dlouhodobým politickým cílem je udělat z Evropského parlamentu muzeum Evropské unie.</p></div>
+				</div>
+				<div class="item" id="_kandidat-5">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/panek.jpg" alt="Martin Pánek"></span>
+					<div class="popis"><h2>5. Ing. Martin Pánek</h2><em>ekonom</em>
+					<p>Ing. Martin Pánek vystudoval obor ekonomická analýza na VŠE a momentálně pracuje na pozici IT helpdesk. Je šéfredaktorem časopisu Laissez Faire a portálu euroSEPTIK.cz. Mluví plynně anglicky a německy, rok svého studia strávil v Bavorsku, půl roku v USA a půl roku v Číně.</p><p>Evropské unii se věnuje soustavně. Přeložil několik hodin videí, které se týkají EU a jejího fungování. Evropské unii věnuje velkou část svého volného času, má nastudovanou literaturu, publikuje o ní články, jeho bakalářská i diplomová práce se Evropskou unií zabývají. Jako europoslanec by chtěl především zviditelnit Svobodné a upozorňovat na zrůdnosti bruselské eurokracie.</p></div>
+				</div>
+				<div class="item" id="_kandidat-6">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/bednar.jpg" alt="Miloslav Bednář"></span>
+					<div class="popis"><h2>6. Prof. PhDr. Miloslav Bednář, CSc.</h2><em>vysokoškolský učitel</em>
+					<p>Prof. PhDr. Miroslav Bednář, CSc. je vědecký pracovník Akademie věd ČR a vysokoškolský učitel zaměřený na politickou filosofii a věcnou kritiku Evropské unie. O politiku se pokouší v praxi, protože to pokládá za svou povinnost.</p><p>Kandiduje proto, že naše členství v Evropské unii považuje za chybu a chce přispět k její nápravě... Rád by se zasloužil o to, aby Česká republika mohla o svém osudu rozhodovat svobodně.</p></div>
+				</div>
+				<div class="item" id="_kandidat-7">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/polanecky.jpg" alt="Jan Polanecký"></span>
+					<div class="popis"><h2>7. Ing. Jan Polanecký</h2><em>manažer vnitřních služeb</em>
+					<p>Ing. Jan Polanecký vystudoval Vysokou školu ekonomickou v oborech finance a politologie. Pracuje jako manažer vnitřních služeb v české pobočce Citibank. Narodil se před 37 lety v Praze, je ženatý a má dvě děti.</p><p>I přes neskrývanou skepsi k institucím Evropské unie kandiduje v primárních volbách Strany svobodných občanů pro volby do Evropského parlamentu, aby se spolu s ostatními kriticky smýšlejícími politiky zasadil o omezení moci bruselské byrokracie nad členskými státy a jejich občany. Domnívá se totiž, že postupný návrat k demokratickým principům, skutečnému kapitalismu a svobodě je možný pouze s využitím podmínek stávajícího politického prostředí.</p></div>
+				</div>
+				<div class="item" id="_kandidat-8">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/kremlik.jpg" alt="Vítězslav Kremlík"></span>
+					<div class="popis"><h2>8. Mgr. Vítězslav Kremlík</h2><em>překladatel, historik</em>
+					<p>Mgr. Vítězslav Kremlík, překladatel a historik. Autor stránek Klimaskeptik.cz, zdokumentoval celý podvod s globálním oteplováním. Vystupoval v televizi i v Senátu Parlamentu ČR, publikuje články v Lidových novinách.</p<p>„Věřím, že jako europoslanec bych měl lepší zázemí pro osvětu. Změny klimatu existovaly vždy, zastavit je nelze a uhlíková daň počasí nezlepší. Europarlament může fungovat jako hráz, v roce 2011 zamítl zvyšování nesmyslných klimatických závazků z 20 na 30 %,“ vysvětluje Vítězslav Kremlík. Eurokomisař Tajani označil boj proti CO2 za „ekonomický masakr“. Energie jsou kvůli tomu až 3x dražší než v USA. Jde ale i o mravní otázku. Klimatické náboženství se svým pronásledováním kacířů a svou iracionalitou nás vrací zpátky do středověku.“</p></div>
+				</div>
+				<div class="item" id="_kandidat-9">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/vodicka.jpg" alt="Milan Vodička"></span>
+					<div class="popis"><h2>9. Ing. Milan Vodička, CSc.</h2><em>ekonom, soudní znalec</em>
+					<p>Ing. Milan Vodička, CSc., ekonom a soudní znalec (oceňování podniků), předseda krajského sdružení Svobodných ve Středočeském kraji. Kandidoval v roce 2012 za Svobodné do Senátu v obvodě Benešov s výsledkem 2300 hlasů (6 %). V roce 2000 řídil Organizační centrum pro přípravu a organizaci Výročních zasedání MMF a Světové banky, má zkušenosti z řízení a organizace firem.</p><p>V EP chce prosazovat výjimku vůči eurozóně (nezavedení eura v ČR), rušení nesmyslných energetických koncepcí a zrušení směrnice EP č. 2000/84 o úpravě letního času.</p></div>
+				</div>
+				<div class="item" id="_kandidat-10">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/jezek.jpg" alt="Jakub Ježek"></span>
+					<div class="popis"><h2>10. Mgr. Jakub Ježek</h2><em>právník</em>
+					<p>Mgr. Jakub Ježek je předsedou Svobodných Jihomoravského kraje, má 30 let a profesí je právník. Pracuje pro ekonomické a osobní svobody jednotlivců, proti přebujelému státu a Bruselskému direktivismu. V Evropském parlamentu chce především hájit dodržování svobody jednotlivců a mezinárodní nezávislost národních států. Za největší nebezpečí z Bruselu považuje prosazování radikálního EUismu, ekoalarmismu, enviromentalismu, multikulturalismu, socialismu, etatismu, a jiných kolektivismů.</p></div>
+				</div>
+				<div class="item" id="_kandidat-11">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/zboril.jpg" alt="Josef Zbořil"></span>
+					<div class="popis"><h2>11. Ing. Josef Zbořil, Ph.D.</h2><em>pracovník vývoje a výzkumu ve strojírenství</em>
+					<p><a href="http://www.zboriljosef.cz/">Ing. Zbořil Josef, Ph.D.</a> (1979) je pracovníkem výzkumu a vývoje ve strojírenství a Olomouckým krajským předsedou Strany svobodných občanů. Více o názorech a postojích v článku - <a href="http://zboril.blog.idnes.cz/c/356036/Predstaveni-olomouckeho-lidra-Svobodnych-pro-volby-do-PSP-CR-2013.html">Josef Zbořil: kandidát Svobodných č. 11 do Evropského Parlamentu 2014</a>.</p></div>
+				</div>
+				<div class="item" id="_kandidat-12">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/steinhauserova.jpg" alt="Irena Steinhauserová"></span>
+					<div class="popis"><h2>12. Ing. Mgr. Irena Steinhauserová</h2><em>konzultant domácího vzdělávání</em>
+					<p>Irena Steinhauserová vystudovala stavební fakultu a, jak sama říká, na prahu stáří psychologii. Má šest vlastních dětí a má bohaté zkušenosti s domácím vzděláváním.</p><p>Evropskou civilizaci a její hodnoty považuje za to nejlepší, co zatím v historii bylo. „To si myslím především jako žena, protože postavení žen v naší společnosti je výjimečné. Feminismus a genderové aktivity považuji za zbytečné, protože rovnoprávnost už máme a rovnost není možná. Návrh evropské komisařky Redingové na 40% zastoupení žen ve velkých firmách a podobné konkurenci evropských podniků ohrožující nápady považuji za nesmyslné,“ doplňuje Irena Steinhauserová. Její oblíbenou političkou je Margaret Thatcherová, která prohlásila: „Feministky jsou ženy, které by chtěly něco dostat, aniž by pro to musely cokoliv udělat.“</p></div>
+				</div>
+				<div class="item" id="_kandidat-13">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/strachota.jpg" alt="Jiří Strachota"></span>
+					<div class="popis"><h2>13. Mgr. Jiří Strachota, CSc.</h2><em>fyzik</em>
+					<p>Jiří Strachota vstoupil poprvé do politické strany ve svých 62 letech, když zjistil, že politická filozofie Svobodných a jejich vnitřní kultura jsou zcela v souladu s jeho životním postojem. Povoláním fyzik, pracoval do roku 1994 na největších světových urychlovačích v mezinárodních experimentech. Pět let okusil zaměstnání v průmyslu, potom založil firmu s posláním informatizace lidské společnosti, s kterou se loni rozloučil. V EP chce bránit české voliče proti návratu socializmu a Velkého svazu „oknem“ a pro řádný výkon mandátu využít své znalosti jazyků, reálií a celoživotní zkušenosti mezinárodní spolupráce.</p></div>
+				</div>				
+				<div class="item" id="_kandidat-14">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/pesan.jpg" alt="Pavel Pešan"></span>
+					<div class="popis"><h2>14. Bc. Pavel Pešan</h2><em>regionalista</em>
+					<p>Pavel Pešan je členem Svobodných od vzniku strany na jaře 2009, podruhé za sebou byl zvolen místopředsedou pražských Svobodných. Krom činnosti ve Straně svobodných občanů se věnuje poradenské činnosti z pozice předsedy OS Jeden Domov <a href="http://www.jedendomov.cz/">www.jedendomov.cz</a>. Aktivně se podílí na organizaci předvolebních kampaní, protestních demonstrací (viz <a href="https://www.youtube.com/watch?v=lpNYWMXv6XM">https://www.youtube.com/watch?v=lpNYWMXv6XM</a>). Důvodem ke kandidatuře je, že odmítá nadále sledovat  bez odporu ztrátu suverenity České republiky. Je odhodlán stáhnout vlajku EU z Pražského hradu.</p></div>
+				</div>
+				<div class="item" id="_kandidat-15">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/prentis.jpg" alt="Philip Prentis"></span>
+					<div class="popis"><h2>15. Ing. Philip Prentis, Ph.D.</h2><em>IT specialista</em>
+					<p>Philip Prentis je místopředsedou středočeského krajského sdružení Svobodných a dlouhodobým příznivcem ideje štíhlého státu s nízkými a jednoduchými daněmi. Jako občan ČR a Velké Británie se cítí být Evropanem a vadí mu, jak EU nedemokratickými cestami postupně okrádá své občany o možnost rozhodovat sami za sebe.</p><p>V Evropském parlamentu by chtěl využít svou jazykovou vybavenost a pomoct Svobodným spojit se s britskou UKIP a s dalšími euroskeptickými stranami, abychom dokázali společně čelit nekonečnému proudu direktiv Evropské komise, které omezují naši národní suverenitu i osobní svobodu každého z nás.</p></div>
+				</div>
+				<div class="item" id="_kandidat-16">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/minovska.jpg" alt="Veronika Miňovská"></span>
+					<div class="popis"><h2>16. Ing. Veronika Miňovská</h2><em>marketing manager</em>
+					<p>Veronika Miňovská vystudovala Vysokou školu ekonomickou, obor Mezinárodní politika a diplomacie. Navštěvovala nesčetné množství předmětů zaměřených na EU a její fungování. Je nadšencem do internetu a nových technologií. V současnosti pracuje v českém IT startupu zaměřeném na globální trh. Mluví plynně anglicky a domluví se i německy a rusky.</p><p>Ke kandidatuře do EP ji vede především nesouhlas s obrovským (a neustále se zvětšujícím) objemem dotací, s jejichž negativním vlivem na business se denně setkává. Těší se na chvíli, kdy nebude z veřejných peněz podporován neefektivní business a zároveň se nebudou házet klacky pod nohy podnikání, které má na trhu své místo.</p></div>
+				</div>
+				<div class="item" id="_kandidat-17">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/urzova.jpg" alt="Jana Urzová"></span>
+					<div class="popis"><h2>17. Mgr. Jana Urzová</h2><em>VŠ a SŠ učitelka</em>
+					<p>Janě Urzové je 42 let, vdaná, absolventka MFF UK, přednáší fyziku a matematiku na FBMI ČVUT a vyučuje fyziku na gymnáziu. Místopředsedkyně Středočeského krajského sdružení.</p><p>Zastává názor, že o sobě si vždycky musíme rozhodovat sami a za svoje rozhodnutí nést odpovědnost. Do voleb jde s tím, že čím méně nám bude do života zasahovat EU, tím lépe. Prohlašuje, že nepotřebujeme zbytečné úředníky, přebujelou byrokracii a uměle vytvořené problémy, které nám vnucují z Bruselu, protože sami máme svých starostí až dost a nikdo za nás nic nevyřeší. „Nemá smysl čekat na kouzelný zásah zvenčí, musíme se zvednout a začít řešit problémy sami,“ domnívá se Jana Urzová.</p></div>
+				</div>
+				<div class="item" id="_kandidat-18">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/sladkovska.jpg" alt="Tereza Sladkovská"></span>
+					<div class="popis"><h2>18. Tereza Sladkovská</h2><em>studentka 2. lékařské fakulty UK</em>
+					<p>Tereza Sladkovská je členkou Svobodných od října 2012, od roku 2013 se aktivně podílí na dění ve straně. V současné době studuje 2. lékařskou fakultu UK, zajímá se o astronomii, přírodní vědy, historii a stravování.</p><p>„Většina lidí vám bude tvrdit, že chtějí do Evropského parlamentu, aby hájili zájmy České republiky a osobní svobody. Takovou ambici já nemám. Zesměšnění institucí EU a jejích představitelů. Čistý mediální teror. Více vám reálně nabídnout nemohu,“ řekla o kandidatuře Tereza Sladkovská.</p></div>
+				</div>	
+				<div class="item" id="_kandidat-19">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/spoljaric.jpg" alt="Damir Špoljarič"></span>
+					<div class="popis"><h2>19. Damir Špoljarič</h2><em>podnikatel v IT</em>
+					<p>Damir Špoljarič studoval Vysokou školu ekonomickou a následně se začal naplno věnovat informačním technologiím a telekomunikacím. V tomto oboru také aktivně od svých 18 let podniká s mezinárodním dosahem. Dále se věnuje dopravě a snaží se publikační činností upozorňovat na chystané dopravní regulace a jejich škodlivé důsledky. Oba obory, kterým se aktivně věnuje, jsou, jak ze strany státu, tak ze strany Evropské unie, neustále pod palbou nových regulací, čemuž by se snažil z pozice europoslance bránit.</p></div>
+				</div>
+				<div class="item" id="_kandidat-20">	
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/korbelova.jpg" alt="Petra Korbelová"></span>
+					<div class="popis"><h2>20. Bc. Petra Korbelová</h2><em>právník</em>
+					<p>Petra Korbelová se celoživotně věnuje oboru právo. Vystudovala obor „právo v podnikání“. Nyní se dále věnuje své specializaci na ZČU Fakultě právnické oboru „právo a právní věda“. Členkou je od r. 2013 a velmi intenzivně se podílela na organizaci předvolební kampaně v Praze při volbách do PSP 2013. Kandidaturu zvolila jako nástroj k propagaci myšlenek Svobodných.</p></div>
+				</div>
+				<div class="item" id="_kandidat-21">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/cervenka.jpg" alt="Miroslav Červenka"></span>
+					<div class="popis"><h2>21. Mgr. Miroslav Červenka</h2><em>podnikatel</em>
+					<p>Miroslav Červenka je svobodomyslný podnikatel předdůchodového věku, který si rád dělá, co chce a kdy chce, a bytostně nesnáší nespravedlnost, přetvářku a dogmatismus. Je stoupencem svobody a demokracie. Člen republikového výboru Svobodných.</p><p>„Systém fungování EU mi leží v žaludku již hodně let. Lze to i doložit: již v roce 2003 jsem byl v době jednostranně manipulovaného referenda o vstupu do EU krajským koordinátorem hnutí Euroskeptik, založeného pány Barákem, Hanákem a Kurasem. Je příznačné, že dva z těchto tří pánů byli o šest let později i u založení Svobodných.”</p></div>
+				</div>
+				<div class="item" id="_kandidat-22">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/hejdova.jpg" alt="Alice Hejdová"></span>
+					<div class="popis"><h2>22. Alice Hejdová</h2><em>OSVČ</em>
+					<p>Alice Hejdová je ve Svobodných od roku 2009. Aktivně se účastní dění ve straně. Je členkou Republikového výboru Svobodných a má na starost Prahu 8 a Prahu 9.</p><p>„Se stejným zájmem sleduji politickou situaci v České republice a také v Evropské unii. Po zvolení do Evropského parlamentu budeme přímo v centru tvorby mnoha absurdit, které můžeme bez příkras sdělit českému národu. Důležitá je i obrana nezávislosti a boj proti zavedení eura v České republice,“ sdělila Alice Hejdová.</p></div>
+				</div>				
+				<div class="item" id="_kandidat-23">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/lebduska.jpg" alt="Josef Lebduška"></span>
+					<div class="popis"><h2>23. Ing. Josef Lebduška</h2><em>podnikatel</em>
+					<p>„Kandiduji proto, že pamatuji dobu nedávno minulou, a tak nějak mi ji to s tou EU připomíná, protože mi lezou nařízení EU krkem, také proto, že EU si hraje na stát, kterým není. Také proto, že pokud budou v EP sedět jenom tací poslanci, kteří pro vše zvednou ruku, tak to k lepšímu nepovede. Také bych rád, aby moje vnoučata žila ve svobodné a odpovědné společnosti a mohla být hrdá na svůj suverénní stát,“ vysvětlil své názory Josef Lebduška. Kandiduje také proto, aby byl větší výběr kandidátů a domnívá se, že by v EP měl především sedět Petr Mach a další. Josef Lebduška má vysokoškolské vzdělání, nepije, nekouří, nekrade, je těsně před důchodem a nechce nic radikálního, jen svobodu, odpovědnost a suverenitu.</p></div>
+				</div>
+				<div class="item" id="_kandidat-24">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/zapletal.jpg" alt="Jiří Zapletal"></span>
+					<div class="popis"><h2>24. Ing. Jiří Zapletal</h2><em>jednatel, živnostník i zaměstnanec</em>
+					<p>Ing. Jiří Zapletal, 33 let, bytem Ostrava, zadaný, jedno dítě, absolvent Ekonomické fakulty VŠB-TU Ostrava, obor Národní hospodářství, specialista zadávacích řízení, předseda krajského sdružení Strany svobodných občanů v Moravskoslezském kraji. Členem Svobodných od roku 2012.</p><p>Cílem jeho kandidatury je prosazování myšlenek Svobodných nejen v ČR, ale také v EU. Posílení pozice České republiky jako samostatného a suverénního státu, o jehož budoucnosti rozhodují občané České republiky a nikdo jiný. Zamezení byrokratizace společnosti a omezení zásahů do svobod jednotlivců.</p></div>
+				</div>
+				<div class="item" id="_kandidat-25">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/kupilik.jpg" alt="Václav Kupilík"></span>
+					<div class="popis"><h2>25. Václav Kupilík</h2><em>manažer v direct marketingu</em>
+					<p>Václav Kupilík je předsedou Svobodných v Jihočeském kraji. Živí se jako manažer v direct marketingu a je mu 41 let. Žije v Českých Budějovicích.</p></div>
+				</div>
+				<div class="item" id="_kandidat-26">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/chvalovska.jpg" alt="Markéta Chvalovská"></span>
+					<div class="popis"><h2>26. Markéta Chvalovská</h2><em>vedoucí vývojové laboratoře</em>
+					<p>Markéta Chvalovská má 31 let, trvale žije v obci Zlonín v okrese Praha-Východ. Vystudovala Masarykovu střední školu chemickou v Praze. Pracuje na pozici vedoucí vývojové laboratoře ve firme Styl, zabývající se výrobou čisticích prostředků do domácností. Ve volném čase se věnuje převážně sportu, fotografování a historii.</p><p>„Přihlásila jsem se ke kandidatuře, protože vnitřně nesouhlasím s omezováním svobod občanů a států ze strany Evropské unie. Je potřeba zamezit dalšímu útlaku a zbytečným nařízením ze strany úředníku, kteří ovlivňují náš život nesmyslnými dotacemi, multikulturalismem, normami v průmyslu, zemědělství a v dalších odvětvích ve snaze vytvořit jeden velký super stát, řízený velkými mocnostmi,“ vysvětlila své názory Markéta Chvalovská.</p></div>
+				</div>
+				<div class="item" id="_kandidat-27">
+					<span class="obrazek"><img class="img-circle" src="img/kandidati/male/rybar.jpg" alt="Jiří Rybář"></span>
+					<div class="popis"><h2>27. Jiří Rybář</h2><em>IT konzultant, designér</em>
+					<p>Jiří Rybář je 26letý IT konzultant v oblasti designu a přípravy webových stránek s dlouhodobým zájmem o EU, zejména od doby odmítnutí Euroústavy. Na to nejhorší, co přichází z per euroúředníků úspěšně upozorňuje na http://euroskeptik.tumblr.com a http://twitter.com/euroskeptik. Mimo jiné jako jeden z mála sleduje přenosy z EP (podle některých Svobodných jako jediný na světě), případně čte zápisy neuvěřitelných výroků eurofederalistů (tedy většiny europoslanců) z plenárních zasedání. Seznam toho, co mu vadí na Evropské unii, by měl více bodů, než kolik mají Svobodní do těchto voleb kandidátů.</p></div>
+				</div>
+			</div><!-- /.carousel-inner -->
+			<a class="left carousel-control" href="#kandidati-large-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+			<a class="right carousel-control" href="#kandidati-large-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div><!-- /#kandidati-large-carousel -->
+	</div>
+</div><!-- /#kandidati-large -->		
+	<!-- Carousel
+    ================================================== -->
+	<div id="kandidati-small">
+		<div id="kandidati-small-carousel" class="carousel slide">
+		  <!-- Indicators -->
+		  <!--
+		  <ol class="carousel-indicators">
+			<li data-target="#kandidati-small-carousel" data-slide-to="0"></li>
+			<li data-target="#kandidati-small-carousel" data-slide-to="1"></li>
+			<li data-target="#kandidati-small-carousel" data-slide-to="2"></li>
+		  </ol>
+		  -->
+ <div class="carousel-inner">	
+		<div class="item active">
+		  <div class="row kandidati">
+			  <div class="col-lg-4i">
+			  <a href="#kandidat-1"><span class="obrazek"><img class="img-circle" src="img/kandidati/male/mach.jpg" alt="Petr Mach"></span>
+			  <strong>1. Ing. Petr Mach, Ph.D.</strong> <em>ekonom, učitel</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-2">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/payne.jpg" alt="Jiří Payne"></span>
+			  <strong>2. RNDr. Jiří Payne</strong> <em>jaderný fyzik</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-3">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/pajonk.jpg" alt="Tomáš Pajonk"></span>
+			  <strong>3. Ing. Tomáš Pajonk</strong> <em>jednatel, programátor</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			  <div class="col-lg-4i">
+			  <a href="#kandidat-4">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/jedlicka.jpg" alt="Vít Jedlička"></span>
+			  <strong>4. Bc. Vít Jedlička</strong> <em>analytik finančních trhů</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-5">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/panek.jpg" alt="Martin Pánek"></span>
+			  <strong>5. Ing. Martin Pánek</strong> <em>ekonom</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-6">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/bednar.jpg" alt="Miloslav Bednář"></span>
+			  <strong>6. Prof. PhDr. Miloslav Bednář, CSc.</strong> <em>vysokoškolský učitel</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			  <div class="col-lg-4i">
+			  <a href="#kandidat-7">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/polanecky.jpg" alt="Jan Polanecký"></span>
+			  <strong>7. Ing. Jan Polanecký</strong> <em>manažer vnitřních služeb</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-8">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/kremlik.jpg" alt="Vítězslav Kremlík"></span>
+			  <strong>8. Mgr. Vítězslav Kremlík</strong> <em>překladatel, historik</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-9">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/vodicka.jpg" alt="Milan Vodička"></span>
+			  <strong>9. Ing. Milan Vodička, CSc.</strong> <em>ekonom, soudní znalec</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			  <div class="col-lg-4i">
+			  <a href="#kandidat-10">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/jezek.jpg" alt="Jakub Ježek"></span>
+			  <strong>10. Mgr. Jakub Ježek</strong> <em>právník</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-11">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/zboril.jpg" alt="Josef Zbořil"></span>
+			  <strong>11. Ing. Josef Zbořil, Ph.D.</strong> <em>pracovník vývoje a výzkumu ve strojírenství</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-12">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/steinhauserova.jpg" alt="Irena Steinhauserová"></span>
+			  <strong>12. Ing. Mgr. Irena Steinhauserová</strong> <em>konzultant domácího vzdělávání</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			  <div class="col-lg-4i">
+			  <a href="#kandidat-13">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/strachota.jpg" alt="Jiří Strachota"></span>
+			  <strong>13. Mgr. Jiří Strachota, CSc.</strong> <em>fyzik</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-14">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/pesan.jpg" alt="Pavel Pešan"></span>
+			  <strong>14. Bc. Pavel Pešan</strong> <em>regionalista</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-15">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/prentis.jpg" alt="Philip Prentis"></span>
+			  <strong>15. Ing. Philip Prentis, Ph.D.</strong> <em>IT specialista</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			<div class="col-lg-4i">
+			  <a href="#kandidat-16">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/minovska.jpg" alt="Veronika Miňovská"></span>
+			  <strong>16. Ing. Veronika Miňovská</strong> <em>marketing manager</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-17">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/urzova.jpg" alt="Jana Urzová"></span>
+			  <strong>17. Mgr. Jana Urzová</strong> <em>VŠ a SŠ učitelka</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-18">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/sladkovska.jpg" alt="Tereza Sladkovská"></span>
+			  <strong>18. Tereza Sladkovská</strong> <em>studentka 2. lékařské fakulty UK</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			<div class="col-lg-4i">
+			  <a href="#kandidat-19">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/spoljaric.jpg" alt="Damir Špoljarič"></span>
+			  <strong>19. Damir Špoljarič</strong> <em>podnikatel v IT</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-20">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/korbelova.jpg" alt="Petra Korbelová"></span>
+			  <strong>20. Bc. Petra Korbelová</strong> <em>právník</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-21">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/cervenka.jpg" alt="Miroslav Červenka"></span>
+			  <strong>21. Mgr. Miroslav Červenka</strong> <em>podnikatel</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			<div class="col-lg-4i">
+			  <a href="#kandidat-22">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/hejdova.jpg" alt="Alice Hejdová"></span>
+			  <strong>22. Alice Hejdová</strong> <em>OSVČ</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-23">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/lebduska.jpg" alt="Josef Lebduška"></span>
+			  <strong>23. Ing. Josef Lebduška</strong> <em>podnikatel</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-24">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/zapletal.jpg" alt="Jiří Zapletal"></span>
+			  <strong>24. Ing. Jiří Zapletal</strong> <em>jednatel, živnostník i zaměstnanec</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		<div class="item">
+		  <div class="row kandidati">
+			<div class="col-lg-4i">
+			  <a href="#kandidat-25">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/kupilik.jpg" alt="Václav Kupilík"></span>
+			  <strong>25. Václav Kupilík</strong> <em>manažer v direct marketingu</em></a>
+			</div><!-- /.col-lg-4i -->
+			<div class="col-lg-4i">
+			  <a href="#kandidat-26">
+			  <span class="obrazek zena"><img class="img-circle" src="img/kandidati/male/chvalovska.jpg" alt="Markéta Chvalovská"></span>
+			  <strong>26. Markéta Chvalovská</strong> <em>vedoucí vývojové laboratoře</em></a>
+			</div><!-- /.col-lg-4i -->
+			 <div class="col-lg-4i">
+			  <a href="#kandidat-27">
+			  <span class="obrazek"><img class="img-circle" src="img/kandidati/male/rybar.jpg" alt="Jiří Rybář"></span>
+			  <strong>27. Jiří Rybář</strong> <em>IT konzultant, designér</em></a>
+			</div><!-- /.col-lg-4i -->
+		  </div><!-- /.row -->
+		</div><!-- /.item -->
+		</div>
+		  <a class="left carousel-control" href="#kandidati-small-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+		  <a class="right carousel-control" href="#kandidati-small-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+		
+		</div><!-- /.carousel -->
+	</div><!-- /#kandidati-small -->
+	</div>
+	</div><!-- /.container -->
+	<div class="arrow-down"><a href="#priority" title="Přejít na programové priority"><span class="glyphicon glyphicon-chevron-down"></span></a></div>
+	</div>
+	<div id="priority" class="slide">	
+		<div class="container">
+			<div class="content vcenter">	
+<div id="priority-large">
+	<div id="priority-large-carousel-close"><span class="glyphicon glyphicon-remove"></span></div>
+	<div>
+		<div id="priority-large-carousel" class="carousel slide">
+			<div class="carousel-inner">			
+				<div class="item active" id="_prio-1" >
+					<img src="img/priority/ikona-zarovka.PNG" alt="Žárovka"><div class="popis"><h2>Za volné cestování a&nbsp;volný obchod</h2>
+					<p>Podporujeme volný obchod, a to nejen uvnitř EU. Možnosti
+svobodného cestování chceme rozšířit i na další země.</p></div>		
+				</div>
+				<div class="item" id="_prio-2" >
+					<img src="img/priority/ikona-mince.PNG" alt="Mince"><div class="popis"><h2>Euro? Rozhodně ne!</h2>
+					<p>Euro způsobilo ve všech zemích jen zdražování a problémy. Česká republika si musí vyjednat v EU výjimku, aby ho nemusela zavést. Přesně to už dokázala Velká Británie a Dánsko, tak proč ne my? Mít vlastní měnu je velkou výhodou zejména v době hospodářských krizí.</p></div>
+				</div>
+				<div class="item" id="_prio-3">
+					<img src="img/priority/ikona-byrokracie.PNG" alt="Byrokracie"><div class="popis"><h2>Proti euronesmyslům</h2>
+					<p>Zákaz starých laciných žárovek, zákaz nazývat naše tradiční výrobky „pomazánkové máslo“ či „rum“ nebo normy na zakřivení banánů jsou pouze drobnosti. Vážnější jsou směrnice a nařízení EU, které zničily naše cukrovary, nutí nás vyrábět elektřinu ze solárních panelů a naftu z řepky, nebo kvůli nim musíme zdaňovat dětské plenky vysokou sazbou DPH. Tyto regulace nás všechny stojí miliardy korun a likvidují pracovní místa a celá odvětví. Společně s podobně smýšlejícími lidmi i z dalších států budeme hlasovat proti euronesmyslům, které nám jen škodí a zdražují zboží. To sice zní jako samozřejmost, ale zatím to tak v europarlamentu nikdo nedělal a všechny euronesmysly tam procházely jako po másle.
+					<br><br>
+					Více o Euronesmyslech na <a href="http://euronesmysly.cz">Euronesmysly.cz</a></p></div>
+				</div>
+				<div class="item" id="_prio-4" >
+					<img src="img/priority/ikona-hlasovani.PNG" alt="Hlasování"><div class="popis"><h2>Evropa potřebuje&nbsp;změnu</h2>
+					<p>Jsme rozhodně pro dobrovolnou spolupráci. Ale současně jsme proti nesmyslnému nařizování věcí shora a proti byrokracii. Na hloupé regulace EU doplácíme všichni, ať už vysokými cenami, zbytečnými daněmi nebo nízkými důchody. Naším cílem je prosperita pro všechny lidi u nás. Proto budeme svými hlasy bránit všem nesmyslným nápadům z Bruselu!</p></div>
+				</div>
+				<div class="item" id="_prio-5" >
+					<div class="popis dozvedet"><h2>Dozvědět se více</h2>
+					<p>
+					<ul>
+					<li><a href="http://web.svobodni.cz/program/politicky-program#II_7">Kapitola Evropa v Politickém programu Svobodných</a>
+					<li><a href="http://euronesmysly.cz">Euronesmysly.cz</a> – příklady euronesmyslů
+					<li><a href="http://web.svobodni.cz/program/volebni-priority-pro-eurovolby">Volební priority pro eurovolby</a>
+					<li><a href="http://web.svobodni.cz/clanky/jiri-payne-nezit-se-lzi">Jiří Payne: Nežít se lží</a>
+					<li>Brožura k volbám do EP (Posvítíme si na euronesmysly) – <em>připravujeme</em>
+					<li><a href="pdf/svobodni-skladacka-eurovolby-2014.pdf">Leták/skládačka pro volby do EP</a> (PDF)
+					</ul>
+					<span class="specialni">Máte dotazy k programu Svobodných? Neváhejte napsat na <a href="mailto:info@svobodni.cz">info@svobodni.cz</a>.</span>
+					</p>
+					</div>
+				</div>
+
+			</div><!-- /.carousel-inner -->
+			<a class="left carousel-control" href="#priority-large-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+			<a class="right carousel-control" href="#priority-large-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div><!-- /#priority-large-carousel -->
+	</div>
+</div><!-- /#priority-large -->
+
+<div id="priority-small">		
+	<div class="bubbles">
+		<div class="bubble b-green b-1"><a href="#prio-1" data-color-class="green"><strong> Za volné cestování a&nbsp;volný obchod <span>&hellip;</span></strong></a></div>
+		<div class="bubble b-green b-3"><a href="#prio-3" data-color-class="green"><strong> Proti euronesmyslům <span>&hellip;</span></strong></a></div>
+		<div class="bubble b-purple b-2"><a href="#prio-2" data-color-class="green"><strong> Euro? Rozhodně ne! <span>&hellip;</span></strong></a></div>
+		<div class="bubble b-purple b-4"><a href="#prio-4" data-color-class="green"><strong> Evropa potřebuje změnu <span>&hellip;</span></strong></a></div>
+		<div class="bubble b-green b-5"><a href="#prio-5" data-color-class="green"><strong> Dozvědět se více <span>&hellip;</span></strong></a></div>
+	</div>	
+</div><!-- /#priority-small -->				
+			</div> 
+		</div> <!-- /.container -->	
+	</div>
+	<div id="patka" class="slide">
+	<a href="http://web.svobodni.cz/" class="continue-to">Pokračovat na web Svobodných</a>
+	<div class="patka"><a href="http://web.svobodni.cz/pro-media/kontakty">Kontakty</a> &bull; <a href="http://web.svobodni.cz/pro-media/grafika">Grafika a materiály</a> &bull; <a href="http://web.svobodni.cz/registrace/stat-se-priznivcem">Stát se příznivcem</a>  &bull; <a href="https://www.fio.cz/scgi-bin/hermes/dz-transparent.cgi?ID_ucet=2100382818">Transparentní účet</a>  &bull; <a href="http://web.svobodni.cz/udalosti">Události</a></div>
+    </div>
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="main-nav">
+     <div class="navbar-container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <h1><a href="#intro" title="Svobodni.cz">Svobodni.cz<span> </span></a></h1>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#kandidati">Kandidáti</a></li>
+            <li><a href="#priority">Priority</a></li>
+			<li><a href="http://web.svobodni.cz/">Web Svobodných</a></li>
+          </ul>
+		  <script>
+			$(document).ready(function () {
+				$("#main-nav").find("a").each(function () {
+					if ($(this).attr('href').indexOf('#') == 0) {
+						$(this).click(function (e) {
+							NopseAnchorAction();
+						});
+					}
+				});
+			});
+		  </script>
+					
+			<div id="spojeni">
+			<ul>
+			<li class="f"><a href="https://www.facebook.com/svobodni" title="Přidejte se ke Svobodným na Facebooku">Facebook<span> </span></a></li>
+			<li class="g"><a href="https://twitter.com/svobodni" title="Sledujte Svobodné na Twitteru">Twitter<span> </span></a></li>
+			<li class="t"><a href="https://plus.google.com/u/0/+svobodn%C3%AD" title="Přidejte si Svobodné do kruhů Google+">Google+<span> </span></a></li>
+			<li class="y"><a href="http://www.youtube.com/user/svobodni?gl=CZ&amp;hl=cs" title="Sledujte videa Svobodných na YouTube">YouTube<span> </span></a></li>
+			</ul>
+			</div>
+				<nav class="mobile-hide sign-up"><a href="http://web.svobodni.cz/registrace/prispet-financne" rel="nofollow" class="btn btn-primary btn-mini" title="Pomozte svobodným vyhrát">Přispět</a></nav>
+			<div class="stuzka"><img src="img/global/stuzka.PNG" title="Volte č. 24"></div>
+        </div><!--/.nav-collapse -->
+      </div>
+	 </div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/docs.min.js"></script>
+<script>
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+Date();a=s.createElement(o),
+
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43482745-5', 'svobodni.cz');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
